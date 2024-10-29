@@ -38,6 +38,20 @@ services:
       timeout: 5s
       retries: 5
 
+  pgadmin:
+    ports:
+      - "8080:80"
+    image: dpage/pgadmin4
+    container_name: pgadmin_container
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - product-db
+      - order-db
+    networks:
+      - nestjs-network
+
   product-service-test:
     build: ./product-service
     command: npm run test
