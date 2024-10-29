@@ -51,6 +51,6 @@ export class ProductService {
 
   // Find products by IDs
   async findByIds(ids: number[]): Promise<Product[]> {
-    return this.productRepository.find({ where: { id: In(...ids) } });
+    return this.productRepository.find({ where: { id: In(ids) } });
   }
 }

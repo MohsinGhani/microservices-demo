@@ -97,6 +97,6 @@ export class OrderService {
 
   async findProducts(productIds: number[]): Promise<Product[]> {
     const response = await this.productService.FindByIds({ ids: productIds });
-    return response.products;
+    return response?.products ? response?.products : [];
   }
 }
