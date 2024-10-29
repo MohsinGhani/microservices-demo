@@ -45,6 +45,7 @@ This project demonstrates a microservice architecture with two services: `produc
    ```sh
    git clone https://github.com/yourusername/microservice-demo.git
    cd microservice-demo
+
    ```
 
 2. Build the Docker images:
@@ -57,24 +58,13 @@ This project demonstrates a microservice architecture with two services: `produc
 
    - Open your browser and go to `http://localhost:8080`
    - Login with the following credentials:
-
      - Email: `admin@example.com`
      - Password: `admin`
-
-   - Add new server for products with the following details:
-     - Name: `products`
-     - Host name/address: `product-db`
+   - Add a new server with the following details:
+     - Name: `products` or `orders`
+     - Host name/address: `product-db` or `order-db`
      - Port: `5432`
-     - Maintainance database: `productdb`
-     - Username: `postgres`
-     - Password: `1`
-   - Click `Save`
-
-   - Add new server for orders with the following details:
-     - Name: `orders`
-     - Host name/address: or `order-db`
-     - Port: `5432`
-     - Maintainance database: `orderdb`
+     - Maintainance database: `productdb` or `orderdb`
      - Username: `postgres`
      - Password: `1`
    - Click `Save`

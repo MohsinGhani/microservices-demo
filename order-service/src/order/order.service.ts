@@ -7,6 +7,7 @@ import {
   ProductService,
   FindOneRequest,
   DecreaseQuantityRequest,
+  Product,
 } from '../proto/product.pb';
 import { from, lastValueFrom } from 'rxjs';
 
@@ -92,5 +93,10 @@ export class OrderService {
 
   findOne(id: number): Promise<Order> {
     return this.orderRepository.findOne({ where: { id } });
+  }
+
+  async findProducts(productIds: number[]): Promise<Product[]> {
+    const response = await this.productService.FindByIds({ ids: productIds });
+    return response.products;
   }
 }

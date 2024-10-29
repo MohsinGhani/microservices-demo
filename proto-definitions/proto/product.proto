@@ -11,6 +11,7 @@ service ProductService {
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
   rpc FindAll(FindAllRequest) returns (FindAllResponse);
+  rpc FindByIds(FindByIdsRequest) returns (FindByIdsResponse);
 }
 
 message FindOneRequest {
@@ -67,6 +68,14 @@ message FindAllResponse {
   repeated Product products = 1;
 }
 
+message FindByIdsRequest {
+  repeated int32 ids = 1;
+}
+
+message FindByIdsResponse {
+  repeated Product products = 1;
+}
+
 message Empty {}
 
 message Product {
@@ -76,4 +85,3 @@ message Product {
   double price = 4;
   int32 availableQuantity = 5;
 }
-

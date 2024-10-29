@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	OrderService_PlaceOrder_FullMethodName = "/order.OrderService/PlaceOrder"
 	OrderService_GetOrder_FullMethodName   = "/order.OrderService/GetOrder"
-	OrderService_GetOrders_FullMethodName  = "/order.OrderService/getOrders"
+	OrderService_GetOrders_FullMethodName  = "/order.OrderService/GetOrders"
 )
 
 // OrderServiceClient is the client API for OrderService service.
@@ -188,7 +188,7 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrderService_GetOrder_Handler,
 		},
 		{
-			MethodName: "getOrders",
+			MethodName: "GetOrders",
 			Handler:    _OrderService_GetOrders_Handler,
 		},
 	},

@@ -15,6 +15,8 @@ import {
   FindAllResponse,
   UpdateRequest,
   UpdateResponse,
+  FindByIdsRequest,
+  FindByIdsResponse,
 } from '../proto/product.pb';
 
 @Controller('products')
@@ -61,5 +63,11 @@ export class ProductController {
   async removeGrpc(data: DeleteRequest): Promise<DeleteResponse> {
     await this.productService.remove(data.id);
     return { success: true };
+  }
+
+  @GrpcMethod('ProductService', 'FindByIds')
+  async findByIds(data: FindByIdsRequest): Promise<FindByIdsResponse> {
+    const products = await this.productService.findByIds(data.ids);
+    return { products };
   }
 }

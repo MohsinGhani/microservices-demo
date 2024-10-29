@@ -599,7 +599,7 @@ export const Product: MessageFns<Product> = {
 export interface OrderService {
   PlaceOrder(request: PlaceOrderRequest): Promise<PlaceOrderResponse>;
   GetOrder(request: GetOrderRequest): Promise<GetOrderResponse>;
-  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>;
+  GetOrders(request: GetOrdersRequest): Promise<GetOrdersResponse>;
 }
 
 export const OrderServiceServiceName = "order.OrderService";
@@ -611,7 +611,7 @@ export class OrderServiceClientImpl implements OrderService {
     this.rpc = rpc;
     this.PlaceOrder = this.PlaceOrder.bind(this);
     this.GetOrder = this.GetOrder.bind(this);
-    this.getOrders = this.getOrders.bind(this);
+    this.GetOrders = this.GetOrders.bind(this);
   }
   PlaceOrder(request: PlaceOrderRequest): Promise<PlaceOrderResponse> {
     const data = PlaceOrderRequest.encode(request).finish();
@@ -625,9 +625,9 @@ export class OrderServiceClientImpl implements OrderService {
     return promise.then((data) => GetOrderResponse.decode(new BinaryReader(data)));
   }
 
-  getOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
+  GetOrders(request: GetOrdersRequest): Promise<GetOrdersResponse> {
     const data = GetOrdersRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "getOrders", data);
+    const promise = this.rpc.request(this.service, "GetOrders", data);
     return promise.then((data) => GetOrdersResponse.decode(new BinaryReader(data)));
   }
 }

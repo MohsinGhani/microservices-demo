@@ -25,6 +25,7 @@ const (
 	ProductService_Update_FullMethodName           = "/product.ProductService/Update"
 	ProductService_Delete_FullMethodName           = "/product.ProductService/Delete"
 	ProductService_FindAll_FullMethodName          = "/product.ProductService/FindAll"
+	ProductService_FindByIds_FullMethodName        = "/product.ProductService/FindByIds"
 )
 
 // ProductServiceClient is the client API for ProductService service.
@@ -37,6 +38,7 @@ type ProductServiceClient interface {
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 	FindAll(ctx context.Context, in *FindAllRequest, opts ...grpc.CallOption) (*FindAllResponse, error)
+	FindByIds(ctx context.Context, in *FindByIdsRequest, opts ...grpc.CallOption) (*FindByIdsResponse, error)
 }
 
 type productServiceClient struct {
@@ -107,6 +109,16 @@ func (c *productServiceClient) FindAll(ctx context.Context, in *FindAllRequest, 
 	return out, nil
 }
 
+func (c *productServiceClient) FindByIds(ctx context.Context, in *FindByIdsRequest, opts ...grpc.CallOption) (*FindByIdsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindByIdsResponse)
+	err := c.cc.Invoke(ctx, ProductService_FindByIds_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility.
@@ -117,6 +129,7 @@ type ProductServiceServer interface {
 	Update(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	FindAll(context.Context, *FindAllRequest) (*FindAllResponse, error)
+	FindByIds(context.Context, *FindByIdsRequest) (*FindByIdsResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -144,6 +157,9 @@ func (UnimplementedProductServiceServer) Delete(context.Context, *DeleteRequest)
 }
 func (UnimplementedProductServiceServer) FindAll(context.Context, *FindAllRequest) (*FindAllResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FindAll not implemented")
+}
+func (UnimplementedProductServiceServer) FindByIds(context.Context, *FindByIdsRequest) (*FindByIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FindByIds not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 func (UnimplementedProductServiceServer) testEmbeddedByValue()                        {}
@@ -274,6 +290,24 @@ func _ProductService_FindAll_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_FindByIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindByIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).FindByIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ProductService_FindByIds_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).FindByIds(ctx, req.(*FindByIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +338,10 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FindAll",
 			Handler:    _ProductService_FindAll_Handler,
+		},
+		{
+			MethodName: "FindByIds",
+			Handler:    _ProductService_FindByIds_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -35,6 +35,18 @@ export class OrderController {
 
   @GrpcMethod('OrderService', 'GetOrder')
   async getOrder(data: GetOrderRequest): Promise<GetOrderResponse> {
+    const order = await this.orderService.findOne(data.orderId);
+
+    const productIds = order.products.map((product) => product.productId);
+
+    const products = await this.orderService.findProducts(productIds);
+
+    order.products = products.map((product) => ({
+      productId: product.id,
+      quantity: order.products.find((p) => p.productId === product.id).quantity,
+      ...product,
+    }));
+
     return { order: await this.orderService.findOne(data.orderId) };
   }
 }

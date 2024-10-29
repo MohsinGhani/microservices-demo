@@ -7,7 +7,7 @@ option go_package = "proto/order";
 service OrderService {
   rpc PlaceOrder(PlaceOrderRequest) returns (PlaceOrderResponse);
   rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
-  rpc getOrders(GetOrdersRequest) returns (GetOrdersResponse);
+  rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
 }
 
 message PlaceOrderRequest {

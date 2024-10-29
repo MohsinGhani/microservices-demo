@@ -57,15 +57,21 @@ export interface DeleteResponse {
   success: boolean;
 }
 
-export interface FindAllRequest {
-}
+export interface FindAllRequest {}
 
 export interface FindAllResponse {
   products: Product[];
 }
 
-export interface Empty {
+export interface FindByIdsRequest {
+  ids: number[];
 }
+
+export interface FindByIdsResponse {
+  products: Product[];
+}
+
+export interface Empty {}
 
 export interface Product {
   id: number;
@@ -80,7 +86,10 @@ function createBaseFindOneRequest(): FindOneRequest {
 }
 
 export const FindOneRequest: MessageFns<FindOneRequest> = {
-  encode(message: FindOneRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: FindOneRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -88,7 +97,8 @@ export const FindOneRequest: MessageFns<FindOneRequest> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): FindOneRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindOneRequest();
     while (reader.pos < end) {
@@ -123,10 +133,14 @@ export const FindOneRequest: MessageFns<FindOneRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FindOneRequest>, I>>(base?: I): FindOneRequest {
+  create<I extends Exact<DeepPartial<FindOneRequest>, I>>(
+    base?: I
+  ): FindOneRequest {
     return FindOneRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FindOneRequest>, I>>(object: I): FindOneRequest {
+  fromPartial<I extends Exact<DeepPartial<FindOneRequest>, I>>(
+    object: I
+  ): FindOneRequest {
     const message = createBaseFindOneRequest();
     message.id = object.id ?? 0;
     return message;
@@ -138,7 +152,10 @@ function createBaseFindOneResponse(): FindOneResponse {
 }
 
 export const FindOneResponse: MessageFns<FindOneResponse> = {
-  encode(message: FindOneResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: FindOneResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.product !== undefined) {
       Product.encode(message.product, writer.uint32(10).fork()).join();
     }
@@ -146,7 +163,8 @@ export const FindOneResponse: MessageFns<FindOneResponse> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): FindOneResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindOneResponse();
     while (reader.pos < end) {
@@ -170,7 +188,11 @@ export const FindOneResponse: MessageFns<FindOneResponse> = {
   },
 
   fromJSON(object: any): FindOneResponse {
-    return { product: isSet(object.product) ? Product.fromJSON(object.product) : undefined };
+    return {
+      product: isSet(object.product)
+        ? Product.fromJSON(object.product)
+        : undefined,
+    };
   },
 
   toJSON(message: FindOneResponse): unknown {
@@ -181,14 +203,19 @@ export const FindOneResponse: MessageFns<FindOneResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FindOneResponse>, I>>(base?: I): FindOneResponse {
+  create<I extends Exact<DeepPartial<FindOneResponse>, I>>(
+    base?: I
+  ): FindOneResponse {
     return FindOneResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FindOneResponse>, I>>(object: I): FindOneResponse {
+  fromPartial<I extends Exact<DeepPartial<FindOneResponse>, I>>(
+    object: I
+  ): FindOneResponse {
     const message = createBaseFindOneResponse();
-    message.product = (object.product !== undefined && object.product !== null)
-      ? Product.fromPartial(object.product)
-      : undefined;
+    message.product =
+      object.product !== undefined && object.product !== null
+        ? Product.fromPartial(object.product)
+        : undefined;
     return message;
   },
 };
@@ -198,7 +225,10 @@ function createBaseDecreaseQuantityRequest(): DecreaseQuantityRequest {
 }
 
 export const DecreaseQuantityRequest: MessageFns<DecreaseQuantityRequest> = {
-  encode(message: DecreaseQuantityRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: DecreaseQuantityRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -208,8 +238,12 @@ export const DecreaseQuantityRequest: MessageFns<DecreaseQuantityRequest> = {
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): DecreaseQuantityRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(
+    input: BinaryReader | Uint8Array,
+    length?: number
+  ): DecreaseQuantityRequest {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDecreaseQuantityRequest();
     while (reader.pos < end) {
@@ -258,10 +292,14 @@ export const DecreaseQuantityRequest: MessageFns<DecreaseQuantityRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<DecreaseQuantityRequest>, I>>(base?: I): DecreaseQuantityRequest {
+  create<I extends Exact<DeepPartial<DecreaseQuantityRequest>, I>>(
+    base?: I
+  ): DecreaseQuantityRequest {
     return DecreaseQuantityRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<DecreaseQuantityRequest>, I>>(object: I): DecreaseQuantityRequest {
+  fromPartial<I extends Exact<DeepPartial<DecreaseQuantityRequest>, I>>(
+    object: I
+  ): DecreaseQuantityRequest {
     const message = createBaseDecreaseQuantityRequest();
     message.id = object.id ?? 0;
     message.quantity = object.quantity ?? 0;
@@ -274,15 +312,22 @@ function createBaseDecreaseQuantityResponse(): DecreaseQuantityResponse {
 }
 
 export const DecreaseQuantityResponse: MessageFns<DecreaseQuantityResponse> = {
-  encode(message: DecreaseQuantityResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: DecreaseQuantityResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.success !== false) {
       writer.uint32(8).bool(message.success);
     }
     return writer;
   },
 
-  decode(input: BinaryReader | Uint8Array, length?: number): DecreaseQuantityResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+  decode(
+    input: BinaryReader | Uint8Array,
+    length?: number
+  ): DecreaseQuantityResponse {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDecreaseQuantityResponse();
     while (reader.pos < end) {
@@ -306,7 +351,11 @@ export const DecreaseQuantityResponse: MessageFns<DecreaseQuantityResponse> = {
   },
 
   fromJSON(object: any): DecreaseQuantityResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return {
+      success: isSet(object.success)
+        ? globalThis.Boolean(object.success)
+        : false,
+    };
   },
 
   toJSON(message: DecreaseQuantityResponse): unknown {
@@ -317,10 +366,14 @@ export const DecreaseQuantityResponse: MessageFns<DecreaseQuantityResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<DecreaseQuantityResponse>, I>>(base?: I): DecreaseQuantityResponse {
+  create<I extends Exact<DeepPartial<DecreaseQuantityResponse>, I>>(
+    base?: I
+  ): DecreaseQuantityResponse {
     return DecreaseQuantityResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<DecreaseQuantityResponse>, I>>(object: I): DecreaseQuantityResponse {
+  fromPartial<I extends Exact<DeepPartial<DecreaseQuantityResponse>, I>>(
+    object: I
+  ): DecreaseQuantityResponse {
     const message = createBaseDecreaseQuantityResponse();
     message.success = object.success ?? false;
     return message;
@@ -332,7 +385,10 @@ function createBaseCreateRequest(): CreateRequest {
 }
 
 export const CreateRequest: MessageFns<CreateRequest> = {
-  encode(message: CreateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: CreateRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.name !== "") {
       writer.uint32(10).string(message.name);
     }
@@ -349,7 +405,8 @@ export const CreateRequest: MessageFns<CreateRequest> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): CreateRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateRequest();
     while (reader.pos < end) {
@@ -399,9 +456,13 @@ export const CreateRequest: MessageFns<CreateRequest> = {
   fromJSON(object: any): CreateRequest {
     return {
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      description: isSet(object.description)
+        ? globalThis.String(object.description)
+        : "",
       price: isSet(object.price) ? globalThis.Number(object.price) : 0,
-      availableQuantity: isSet(object.availableQuantity) ? globalThis.Number(object.availableQuantity) : 0,
+      availableQuantity: isSet(object.availableQuantity)
+        ? globalThis.Number(object.availableQuantity)
+        : 0,
     };
   },
 
@@ -422,10 +483,14 @@ export const CreateRequest: MessageFns<CreateRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateRequest>, I>>(base?: I): CreateRequest {
+  create<I extends Exact<DeepPartial<CreateRequest>, I>>(
+    base?: I
+  ): CreateRequest {
     return CreateRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CreateRequest>, I>>(object: I): CreateRequest {
+  fromPartial<I extends Exact<DeepPartial<CreateRequest>, I>>(
+    object: I
+  ): CreateRequest {
     const message = createBaseCreateRequest();
     message.name = object.name ?? "";
     message.description = object.description ?? "";
@@ -440,7 +505,10 @@ function createBaseCreateResponse(): CreateResponse {
 }
 
 export const CreateResponse: MessageFns<CreateResponse> = {
-  encode(message: CreateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: CreateResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.product !== undefined) {
       Product.encode(message.product, writer.uint32(10).fork()).join();
     }
@@ -448,7 +516,8 @@ export const CreateResponse: MessageFns<CreateResponse> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): CreateResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateResponse();
     while (reader.pos < end) {
@@ -472,7 +541,11 @@ export const CreateResponse: MessageFns<CreateResponse> = {
   },
 
   fromJSON(object: any): CreateResponse {
-    return { product: isSet(object.product) ? Product.fromJSON(object.product) : undefined };
+    return {
+      product: isSet(object.product)
+        ? Product.fromJSON(object.product)
+        : undefined,
+    };
   },
 
   toJSON(message: CreateResponse): unknown {
@@ -483,14 +556,19 @@ export const CreateResponse: MessageFns<CreateResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<CreateResponse>, I>>(base?: I): CreateResponse {
+  create<I extends Exact<DeepPartial<CreateResponse>, I>>(
+    base?: I
+  ): CreateResponse {
     return CreateResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<CreateResponse>, I>>(object: I): CreateResponse {
+  fromPartial<I extends Exact<DeepPartial<CreateResponse>, I>>(
+    object: I
+  ): CreateResponse {
     const message = createBaseCreateResponse();
-    message.product = (object.product !== undefined && object.product !== null)
-      ? Product.fromPartial(object.product)
-      : undefined;
+    message.product =
+      object.product !== undefined && object.product !== null
+        ? Product.fromPartial(object.product)
+        : undefined;
     return message;
   },
 };
@@ -500,7 +578,10 @@ function createBaseUpdateRequest(): UpdateRequest {
 }
 
 export const UpdateRequest: MessageFns<UpdateRequest> = {
-  encode(message: UpdateRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: UpdateRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -520,7 +601,8 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): UpdateRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateRequest();
     while (reader.pos < end) {
@@ -579,9 +661,13 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     return {
       id: isSet(object.id) ? globalThis.Number(object.id) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      description: isSet(object.description)
+        ? globalThis.String(object.description)
+        : "",
       price: isSet(object.price) ? globalThis.Number(object.price) : 0,
-      availableQuantity: isSet(object.availableQuantity) ? globalThis.Number(object.availableQuantity) : 0,
+      availableQuantity: isSet(object.availableQuantity)
+        ? globalThis.Number(object.availableQuantity)
+        : 0,
     };
   },
 
@@ -605,10 +691,14 @@ export const UpdateRequest: MessageFns<UpdateRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdateRequest>, I>>(base?: I): UpdateRequest {
+  create<I extends Exact<DeepPartial<UpdateRequest>, I>>(
+    base?: I
+  ): UpdateRequest {
     return UpdateRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<UpdateRequest>, I>>(object: I): UpdateRequest {
+  fromPartial<I extends Exact<DeepPartial<UpdateRequest>, I>>(
+    object: I
+  ): UpdateRequest {
     const message = createBaseUpdateRequest();
     message.id = object.id ?? 0;
     message.name = object.name ?? "";
@@ -624,7 +714,10 @@ function createBaseUpdateResponse(): UpdateResponse {
 }
 
 export const UpdateResponse: MessageFns<UpdateResponse> = {
-  encode(message: UpdateResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: UpdateResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.product !== undefined) {
       Product.encode(message.product, writer.uint32(10).fork()).join();
     }
@@ -632,7 +725,8 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): UpdateResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateResponse();
     while (reader.pos < end) {
@@ -656,7 +750,11 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
   },
 
   fromJSON(object: any): UpdateResponse {
-    return { product: isSet(object.product) ? Product.fromJSON(object.product) : undefined };
+    return {
+      product: isSet(object.product)
+        ? Product.fromJSON(object.product)
+        : undefined,
+    };
   },
 
   toJSON(message: UpdateResponse): unknown {
@@ -667,14 +765,19 @@ export const UpdateResponse: MessageFns<UpdateResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<UpdateResponse>, I>>(base?: I): UpdateResponse {
+  create<I extends Exact<DeepPartial<UpdateResponse>, I>>(
+    base?: I
+  ): UpdateResponse {
     return UpdateResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<UpdateResponse>, I>>(object: I): UpdateResponse {
+  fromPartial<I extends Exact<DeepPartial<UpdateResponse>, I>>(
+    object: I
+  ): UpdateResponse {
     const message = createBaseUpdateResponse();
-    message.product = (object.product !== undefined && object.product !== null)
-      ? Product.fromPartial(object.product)
-      : undefined;
+    message.product =
+      object.product !== undefined && object.product !== null
+        ? Product.fromPartial(object.product)
+        : undefined;
     return message;
   },
 };
@@ -684,7 +787,10 @@ function createBaseDeleteRequest(): DeleteRequest {
 }
 
 export const DeleteRequest: MessageFns<DeleteRequest> = {
-  encode(message: DeleteRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: DeleteRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -692,7 +798,8 @@ export const DeleteRequest: MessageFns<DeleteRequest> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): DeleteRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteRequest();
     while (reader.pos < end) {
@@ -727,10 +834,14 @@ export const DeleteRequest: MessageFns<DeleteRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<DeleteRequest>, I>>(base?: I): DeleteRequest {
+  create<I extends Exact<DeepPartial<DeleteRequest>, I>>(
+    base?: I
+  ): DeleteRequest {
     return DeleteRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<DeleteRequest>, I>>(object: I): DeleteRequest {
+  fromPartial<I extends Exact<DeepPartial<DeleteRequest>, I>>(
+    object: I
+  ): DeleteRequest {
     const message = createBaseDeleteRequest();
     message.id = object.id ?? 0;
     return message;
@@ -742,7 +853,10 @@ function createBaseDeleteResponse(): DeleteResponse {
 }
 
 export const DeleteResponse: MessageFns<DeleteResponse> = {
-  encode(message: DeleteResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: DeleteResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.success !== false) {
       writer.uint32(8).bool(message.success);
     }
@@ -750,7 +864,8 @@ export const DeleteResponse: MessageFns<DeleteResponse> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): DeleteResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteResponse();
     while (reader.pos < end) {
@@ -774,7 +889,11 @@ export const DeleteResponse: MessageFns<DeleteResponse> = {
   },
 
   fromJSON(object: any): DeleteResponse {
-    return { success: isSet(object.success) ? globalThis.Boolean(object.success) : false };
+    return {
+      success: isSet(object.success)
+        ? globalThis.Boolean(object.success)
+        : false,
+    };
   },
 
   toJSON(message: DeleteResponse): unknown {
@@ -785,10 +904,14 @@ export const DeleteResponse: MessageFns<DeleteResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<DeleteResponse>, I>>(base?: I): DeleteResponse {
+  create<I extends Exact<DeepPartial<DeleteResponse>, I>>(
+    base?: I
+  ): DeleteResponse {
     return DeleteResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<DeleteResponse>, I>>(object: I): DeleteResponse {
+  fromPartial<I extends Exact<DeepPartial<DeleteResponse>, I>>(
+    object: I
+  ): DeleteResponse {
     const message = createBaseDeleteResponse();
     message.success = object.success ?? false;
     return message;
@@ -800,12 +923,16 @@ function createBaseFindAllRequest(): FindAllRequest {
 }
 
 export const FindAllRequest: MessageFns<FindAllRequest> = {
-  encode(_: FindAllRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    _: FindAllRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     return writer;
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): FindAllRequest {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindAllRequest();
     while (reader.pos < end) {
@@ -829,10 +956,14 @@ export const FindAllRequest: MessageFns<FindAllRequest> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FindAllRequest>, I>>(base?: I): FindAllRequest {
+  create<I extends Exact<DeepPartial<FindAllRequest>, I>>(
+    base?: I
+  ): FindAllRequest {
     return FindAllRequest.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FindAllRequest>, I>>(_: I): FindAllRequest {
+  fromPartial<I extends Exact<DeepPartial<FindAllRequest>, I>>(
+    _: I
+  ): FindAllRequest {
     const message = createBaseFindAllRequest();
     return message;
   },
@@ -843,7 +974,10 @@ function createBaseFindAllResponse(): FindAllResponse {
 }
 
 export const FindAllResponse: MessageFns<FindAllResponse> = {
-  encode(message: FindAllResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: FindAllResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     for (const v of message.products) {
       Product.encode(v!, writer.uint32(10).fork()).join();
     }
@@ -851,7 +985,8 @@ export const FindAllResponse: MessageFns<FindAllResponse> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): FindAllResponse {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFindAllResponse();
     while (reader.pos < end) {
@@ -876,7 +1011,9 @@ export const FindAllResponse: MessageFns<FindAllResponse> = {
 
   fromJSON(object: any): FindAllResponse {
     return {
-      products: globalThis.Array.isArray(object?.products) ? object.products.map((e: any) => Product.fromJSON(e)) : [],
+      products: globalThis.Array.isArray(object?.products)
+        ? object.products.map((e: any) => Product.fromJSON(e))
+        : [],
     };
   },
 
@@ -888,12 +1025,170 @@ export const FindAllResponse: MessageFns<FindAllResponse> = {
     return obj;
   },
 
-  create<I extends Exact<DeepPartial<FindAllResponse>, I>>(base?: I): FindAllResponse {
+  create<I extends Exact<DeepPartial<FindAllResponse>, I>>(
+    base?: I
+  ): FindAllResponse {
     return FindAllResponse.fromPartial(base ?? ({} as any));
   },
-  fromPartial<I extends Exact<DeepPartial<FindAllResponse>, I>>(object: I): FindAllResponse {
+  fromPartial<I extends Exact<DeepPartial<FindAllResponse>, I>>(
+    object: I
+  ): FindAllResponse {
     const message = createBaseFindAllResponse();
-    message.products = object.products?.map((e) => Product.fromPartial(e)) || [];
+    message.products =
+      object.products?.map((e) => Product.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseFindByIdsRequest(): FindByIdsRequest {
+  return { ids: [] };
+}
+
+export const FindByIdsRequest: MessageFns<FindByIdsRequest> = {
+  encode(
+    message: FindByIdsRequest,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
+    writer.uint32(10).fork();
+    for (const v of message.ids) {
+      writer.int32(v);
+    }
+    writer.join();
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByIdsRequest {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByIdsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag === 8) {
+            message.ids.push(reader.int32());
+
+            continue;
+          }
+
+          if (tag === 10) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.ids.push(reader.int32());
+            }
+
+            continue;
+          }
+
+          break;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByIdsRequest {
+    return {
+      ids: globalThis.Array.isArray(object?.ids)
+        ? object.ids.map((e: any) => globalThis.Number(e))
+        : [],
+    };
+  },
+
+  toJSON(message: FindByIdsRequest): unknown {
+    const obj: any = {};
+    if (message.ids?.length) {
+      obj.ids = message.ids.map((e) => Math.round(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FindByIdsRequest>, I>>(
+    base?: I
+  ): FindByIdsRequest {
+    return FindByIdsRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<FindByIdsRequest>, I>>(
+    object: I
+  ): FindByIdsRequest {
+    const message = createBaseFindByIdsRequest();
+    message.ids = object.ids?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseFindByIdsResponse(): FindByIdsResponse {
+  return { products: [] };
+}
+
+export const FindByIdsResponse: MessageFns<FindByIdsResponse> = {
+  encode(
+    message: FindByIdsResponse,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
+    for (const v of message.products) {
+      Product.encode(v!, writer.uint32(10).fork()).join();
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): FindByIdsResponse {
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFindByIdsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1: {
+          if (tag !== 10) {
+            break;
+          }
+
+          message.products.push(Product.decode(reader, reader.uint32()));
+          continue;
+        }
+      }
+      if ((tag & 7) === 4 || tag === 0) {
+        break;
+      }
+      reader.skip(tag & 7);
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FindByIdsResponse {
+    return {
+      products: globalThis.Array.isArray(object?.products)
+        ? object.products.map((e: any) => Product.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: FindByIdsResponse): unknown {
+    const obj: any = {};
+    if (message.products?.length) {
+      obj.products = message.products.map((e) => Product.toJSON(e));
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FindByIdsResponse>, I>>(
+    base?: I
+  ): FindByIdsResponse {
+    return FindByIdsResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<FindByIdsResponse>, I>>(
+    object: I
+  ): FindByIdsResponse {
+    const message = createBaseFindByIdsResponse();
+    message.products =
+      object.products?.map((e) => Product.fromPartial(e)) || [];
     return message;
   },
 };
@@ -908,7 +1203,8 @@ export const Empty: MessageFns<Empty> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): Empty {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEmpty();
     while (reader.pos < end) {
@@ -946,7 +1242,10 @@ function createBaseProduct(): Product {
 }
 
 export const Product: MessageFns<Product> = {
-  encode(message: Product, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+  encode(
+    message: Product,
+    writer: BinaryWriter = new BinaryWriter()
+  ): BinaryWriter {
     if (message.id !== 0) {
       writer.uint32(8).int32(message.id);
     }
@@ -966,7 +1265,8 @@ export const Product: MessageFns<Product> = {
   },
 
   decode(input: BinaryReader | Uint8Array, length?: number): Product {
-    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const reader =
+      input instanceof BinaryReader ? input : new BinaryReader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseProduct();
     while (reader.pos < end) {
@@ -1025,9 +1325,13 @@ export const Product: MessageFns<Product> = {
     return {
       id: isSet(object.id) ? globalThis.Number(object.id) : 0,
       name: isSet(object.name) ? globalThis.String(object.name) : "",
-      description: isSet(object.description) ? globalThis.String(object.description) : "",
+      description: isSet(object.description)
+        ? globalThis.String(object.description)
+        : "",
       price: isSet(object.price) ? globalThis.Number(object.price) : 0,
-      availableQuantity: isSet(object.availableQuantity) ? globalThis.Number(object.availableQuantity) : 0,
+      availableQuantity: isSet(object.availableQuantity)
+        ? globalThis.Number(object.availableQuantity)
+        : 0,
     };
   },
 
@@ -1067,11 +1371,14 @@ export const Product: MessageFns<Product> = {
 
 export interface ProductService {
   FindOne(request: FindOneRequest): Promise<FindOneResponse>;
-  DecreaseQuantity(request: DecreaseQuantityRequest): Promise<DecreaseQuantityResponse>;
+  DecreaseQuantity(
+    request: DecreaseQuantityRequest
+  ): Promise<DecreaseQuantityResponse>;
   Create(request: CreateRequest): Promise<CreateResponse>;
   Update(request: UpdateRequest): Promise<UpdateResponse>;
   Delete(request: DeleteRequest): Promise<DeleteResponse>;
   FindAll(request: FindAllRequest): Promise<FindAllResponse>;
+  FindByIds(request: FindByIdsRequest): Promise<FindByIdsResponse>;
 }
 
 export const ProductServiceServiceName = "product.ProductService";
@@ -1087,59 +1394,100 @@ export class ProductServiceClientImpl implements ProductService {
     this.Update = this.Update.bind(this);
     this.Delete = this.Delete.bind(this);
     this.FindAll = this.FindAll.bind(this);
+    this.FindByIds = this.FindByIds.bind(this);
   }
   FindOne(request: FindOneRequest): Promise<FindOneResponse> {
     const data = FindOneRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FindOne", data);
-    return promise.then((data) => FindOneResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      FindOneResponse.decode(new BinaryReader(data))
+    );
   }
 
-  DecreaseQuantity(request: DecreaseQuantityRequest): Promise<DecreaseQuantityResponse> {
+  DecreaseQuantity(
+    request: DecreaseQuantityRequest
+  ): Promise<DecreaseQuantityResponse> {
     const data = DecreaseQuantityRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DecreaseQuantity", data);
-    return promise.then((data) => DecreaseQuantityResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      DecreaseQuantityResponse.decode(new BinaryReader(data))
+    );
   }
 
   Create(request: CreateRequest): Promise<CreateResponse> {
     const data = CreateRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "Create", data);
-    return promise.then((data) => CreateResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      CreateResponse.decode(new BinaryReader(data))
+    );
   }
 
   Update(request: UpdateRequest): Promise<UpdateResponse> {
     const data = UpdateRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "Update", data);
-    return promise.then((data) => UpdateResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      UpdateResponse.decode(new BinaryReader(data))
+    );
   }
 
   Delete(request: DeleteRequest): Promise<DeleteResponse> {
     const data = DeleteRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "Delete", data);
-    return promise.then((data) => DeleteResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      DeleteResponse.decode(new BinaryReader(data))
+    );
   }
 
   FindAll(request: FindAllRequest): Promise<FindAllResponse> {
     const data = FindAllRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FindAll", data);
-    return promise.then((data) => FindAllResponse.decode(new BinaryReader(data)));
+    return promise.then((data) =>
+      FindAllResponse.decode(new BinaryReader(data))
+    );
+  }
+
+  FindByIds(request: FindByIdsRequest): Promise<FindByIdsResponse> {
+    const data = FindByIdsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "FindByIds", data);
+    return promise.then((data) =>
+      FindByIdsResponse.decode(new BinaryReader(data))
+    );
   }
 }
 
 interface Rpc {
-  request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
+  request(
+    service: string,
+    method: string,
+    data: Uint8Array
+  ): Promise<Uint8Array>;
 }
 
-type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
+type Builtin =
+  | Date
+  | Function
+  | Uint8Array
+  | string
+  | number
+  | boolean
+  | undefined;
 
-export type DeepPartial<T> = T extends Builtin ? T
-  : T extends globalThis.Array<infer U> ? globalThis.Array<DeepPartial<U>>
-  : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>>
-  : T extends {} ? { [K in keyof T]?: DeepPartial<T[K]> }
+export type DeepPartial<T> = T extends Builtin
+  ? T
+  : T extends globalThis.Array<infer U>
+  ? globalThis.Array<DeepPartial<U>>
+  : T extends ReadonlyArray<infer U>
+  ? ReadonlyArray<DeepPartial<U>>
+  : T extends {}
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
   : Partial<T>;
 
 type KeysOfUnion<T> = T extends T ? keyof T : never;
-export type Exact<P, I extends P> = P extends Builtin ? P
-  : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+export type Exact<P, I extends P> = P extends Builtin
+  ? P
+  : P & { [K in keyof P]: Exact<P[K], I[K]> } & {
+      [K in Exclude<keyof I, KeysOfUnion<P>>]: never;
+    };
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

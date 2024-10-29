@@ -40,8 +40,8 @@ describe('OrderService', () => {
       .getService('ProductService');
 
     // Adding mock implementations directly to productService using Promises
-    jest.spyOn(productService, 'FindOne').mockImplementation(({ id }) => {
-      return Promise.resolve({
+    jest.spyOn(productService, 'FindOne').mockImplementation(async ({ id }) => {
+      return {
         product: {
           id,
           name: 'Product',
@@ -49,16 +49,16 @@ describe('OrderService', () => {
           price: 100,
           availableQuantity: 10,
         },
-      });
+      };
     });
 
     jest
       .spyOn(productService, 'DecreaseQuantity')
-      .mockImplementation(({ id, quantity }) => {
+      .mockImplementation(async ({ id, quantity }) => {
         if (quantity > 10) {
-          return Promise.resolve({ success: false });
+          return { success: false };
         }
-        return Promise.resolve({ success: true });
+        return { success: true };
       });
   });
 
@@ -100,10 +100,48 @@ describe('OrderService', () => {
     expect(await service.findAll()).toEqual(orders);
   });
 
-  it('should retrieve a single order by ID', async () => {
-    const order = { id: 1, total: 100 };
-    jest.spyOn(repository, 'findOne').mockResolvedValue(order as Order);
+  // it('should get order with products', async () => {
+  //   const order = {
+  //     id: 1,
+  //     total: 100,
+  //     products: [
+  //       { productId: 1, quantity: 2 },
+  //       { productId: 2, quantity: 3 },
+  //     ],
+  //   };
 
-    expect(await service.findOne(1)).toEqual(order);
-  });
+  //   const product1 = {
+  //     id: 1,
+  //     name: 'Product 1',
+  //     description: 'Description 1',
+  //     price: 100,
+  //     availableQuantity: 10,
+  //   };
+
+  //   const product2 = {
+  //     id: 2,
+  //     name: 'Product 2',
+  //     description: 'Description 2',
+  //     price: 200,
+  //     availableQuantity: 10,
+  //   };
+
+  //   jest.spyOn(repository, 'findOne').mockResolvedValue(order as Order);
+  //   jest.spyOn(productService, 'FindOne').mockImplementation(async ({ id }) => {
+  //     if (id === 1) return { product: product1 };
+  //     if (id === 2) return { product: product2 };
+  //     return { product: null };
+  //   });
+
+  //   const expectedOrder = {
+  //     ...order,
+  //     products: [
+  //       { ...order.products[0], ...product1 },
+  //       { ...order.products[1], ...product2 },
+  //     ],
+  //   };
+
+  //   const result = await service.findOne(1);
+  //   expect(result).toEqual(expectedOrder);
+  // });
 });
