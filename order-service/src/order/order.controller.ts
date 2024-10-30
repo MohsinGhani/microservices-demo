@@ -17,13 +17,7 @@ export class OrderController {
 
   @GrpcMethod('OrderService', 'PlaceOrder')
   async placeOrderGrpc(data: PlaceOrderRequest): Promise<PlaceOrderResponse> {
-    const body = {
-      userId: data.customerAddress,
-      products: data.products,
-      customerName: data.customerName, //TODO: we'll need to add this field to the Order entity
-    };
-
-    const order = await this.orderService.placeOrder(body);
+    const order = await this.orderService.placeOrder(data);
 
     return { order };
   }
@@ -35,6 +29,8 @@ export class OrderController {
 
   @GrpcMethod('OrderService', 'GetOrder')
   async getOrder(data: GetOrderRequest): Promise<GetOrderResponse> {
-    return { order: await this.orderService.findOne(data.orderId) };
+    return {
+      order: await this.orderService.FindOrderWithProducts(data.orderId),
+    };
   }
 }
