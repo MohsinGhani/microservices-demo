@@ -3,7 +3,7 @@ import { OrderService } from './order.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Order } from './order.entity';
 import { Repository } from 'typeorm';
-import { ProductService } from '../proto/product.pb';
+import { ProductService } from '../../../proto-definitions/generated/product';
 import { ClientGrpc } from '@nestjs/microservices';
 
 describe('OrderService', () => {

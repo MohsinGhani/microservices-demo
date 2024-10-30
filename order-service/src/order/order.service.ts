@@ -8,7 +8,7 @@ import {
   FindOneRequest,
   DecreaseQuantityRequest,
   Product,
-} from '../proto/product.pb';
+} from '../../../proto-definitions/generated/product';
 import { from, lastValueFrom } from 'rxjs';
 
 @Injectable()
