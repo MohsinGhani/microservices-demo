@@ -10,4 +10,10 @@ export class Order {
 
   @Column('decimal')
   total: number;
+
+  @Column('varchar')
+  customerName: string;
+
+  @Column('varchar')
+  customerId: number;
 }

@@ -80,6 +80,8 @@ describe('OrderService', () => {
         { productId: 1, quantity: 2 },
         { productId: 2, quantity: 3 },
       ],
+      customerName: 'Customer',
+      customerId: '1',
     };
 
     const createdOrder = { id: 1, products: orderData.products, total: 500 };

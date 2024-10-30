@@ -1,7 +1,6 @@
 import { Injectable, Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from './order.entity';
 import { ClientGrpc } from '@nestjs/microservices';
 import {
   ProductService,
@@ -10,6 +9,13 @@ import {
   Product,
 } from '../../../proto-definitions/generated/product';
 import { from, lastValueFrom } from 'rxjs';
+import {
+  PlaceOrderRequest,
+  Order as OrderProtoType,
+  FullOrder,
+} from '../../../proto-definitions/generated/order';
+import { Order } from './order.entity';
+import { status as grpcStatus } from '@grpc/grpc-js';
 
 @Injectable()
 export class OrderService {
@@ -24,9 +30,7 @@ export class OrderService {
       this.client.getService<ProductService>('ProductService');
   }
 
-  async placeOrder(orderData: {
-    products: { productId: number; quantity: number }[];
-  }): Promise<Order> {
+  async placeOrder(orderData: PlaceOrderRequest): Promise<OrderProtoType> {
     let total = 0;
 
     const productPromises = orderData.products.map(async (item) => {
@@ -82,6 +86,8 @@ export class OrderService {
     const order = this.orderRepository.create({
       products,
       total,
+      customerName: orderData.customerName,
+      customerId: Number(orderData.customerId),
     });
 
     return this.orderRepository.save(order);
@@ -95,8 +101,39 @@ export class OrderService {
     return this.orderRepository.findOne({ where: { id } });
   }
 
+  async FindOrderWithProducts(orderId: number): Promise<FullOrder> {
+    const order = await this.orderRepository.findOne({
+      where: { id: orderId },
+    });
+
+    if (!order) {
+      // Map HTTP NOT_FOUND to gRPC NOT_FOUND
+      throw {
+        code: grpcStatus.NOT_FOUND,
+        message: 'Order not found',
+      };
+    }
+
+    const productIds = order.products.map((product) => product.productId);
+
+    const products = await this.findProducts(productIds);
+
+    if (order && order.products) {
+      order.products = products.map((product) => ({
+        productId: product.id,
+        quantity: order.products.find((p) => p.productId === product.id)
+          ?.quantity,
+        ...product,
+      }));
+    }
+
+    return order as unknown as FullOrder;
+  }
+
   async findProducts(productIds: number[]): Promise<Product[]> {
-    const response = await this.productService.FindByIds({ ids: productIds });
-    return response?.products ? response?.products : [];
+    const response = await lastValueFrom(
+      from(this.productService.FindByIds({ ids: productIds })),
+    );
+    return response.products;
   }
 }

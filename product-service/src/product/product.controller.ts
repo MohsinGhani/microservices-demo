@@ -66,7 +66,7 @@ export class ProductController {
   }
 
   @GrpcMethod('ProductService', 'FindByIds')
-  async findByIds(data: FindByIdsRequest): Promise<FindByIdsResponse> {
+  async findByIdsGrpc(data: FindByIdsRequest): Promise<FindByIdsResponse> {
     const products = await this.productService.findByIds(data.ids);
     return { products };
   }

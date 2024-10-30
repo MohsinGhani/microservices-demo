@@ -13,7 +13,7 @@ service OrderService {
 message PlaceOrderRequest {
   repeated Product products = 1;
   string customerName = 2;
-  string customerAddress = 3;
+  string customerId = 3;
 }
 
 message PlaceOrderResponse {
@@ -25,7 +25,7 @@ message GetOrderRequest {
 }
 
 message GetOrderResponse {
-  Order order = 1;
+  FullOrder order = 1;
 }
 
 message GetOrdersRequest {
@@ -40,9 +40,27 @@ message Order {
   int32 id = 1;
   repeated Product products = 2;
   double total = 3;
+  int32 customerId = 4;
+  string customerName = 5;
 }
 
 message Product {
   int32 productId = 1;
   int32 quantity = 2;
+}
+
+message FullProduct {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  double price = 4;
+  int32 availableQuantity = 5;
+}
+
+message FullOrder {
+  int32 id = 1;
+  repeated FullProduct products = 2;
+  double total = 3;
+  int32 customerId = 4;
+  string customerName = 5;
 }

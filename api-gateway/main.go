@@ -15,6 +15,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/juju/ratelimit"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // ProductServiceServer implementation for the ProductService gRPC methods
@@ -268,6 +270,7 @@ func main() {
 	})
 
 	// Protected route to get a single order by ID
+
 	r.GET("/orders/:id", JWTAuthMiddleware(), func(c *gin.Context) {
 		id := c.Param("id")
 		idInt, err := strconv.Atoi(id)
@@ -276,11 +279,33 @@ func main() {
 			return
 		}
 		req := &pbOrder.GetOrderRequest{OrderId: int32(idInt)}
+
+		// Call the NestJS order service
 		res, err := orderClient.GetOrder(c, req)
+
+		log.Printf("Error calling GetOrder: %v", err)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			// Parse gRPC error status
+			grpcErr, ok := status.FromError(err)
+			if ok {
+				switch grpcErr.Code() {
+				case codes.NotFound:
+					c.JSON(http.StatusNotFound, gin.H{"error": grpcErr.Message()})
+				case codes.InvalidArgument:
+					c.JSON(http.StatusBadRequest, gin.H{"error": grpcErr.Message()})
+				case codes.Internal:
+					c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
+				default:
+					c.JSON(http.StatusInternalServerError, gin.H{"error": grpcErr.Message()})
+				}
+				return
+			}
+			// Fallback if not a gRPC error
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error"})
 			return
 		}
+
+		// If no error, return the order response
 		c.JSON(http.StatusOK, res)
 	})
 
