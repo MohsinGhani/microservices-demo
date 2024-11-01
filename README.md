@@ -43,8 +43,8 @@ This project demonstrates a microservice architecture with two services: `produc
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/yourusername/microservice-demo.git
-   cd microservice-demo
+   git clone https://github.com/MohsinGhani/microservices-demo.git
+   cd microservices-demo
 
    ```
 
@@ -54,8 +54,15 @@ This project demonstrates a microservice architecture with two services: `produc
    docker-compose up -d
    ```
 
-3. Check that the databases created on pgadmin:
+3. Setting up Postman for API invocations:
 
+   - Import the Postman collection from `postman` folder.
+   - Update the environment variables with the correct values:
+     - `token`: `leave empty` (for now)
+     - `base_url`: `http://localhost:8081` (for api-gateway)
+   - In the Authentication Folder invoke the Generate Token request to update the token value automatically.
+
+4. Check that the databases created on pgadmin (Optional):
    - Open your browser and go to `http://localhost:8080`
    - Login with the following credentials:
      - Email: `admin@example.com`
@@ -68,13 +75,5 @@ This project demonstrates a microservice architecture with two services: `produc
      - Username: `postgres`
      - Password: `1`
    - Click `Save`
-
-4. Setting up Postman for API invocations:
-
-   - Import the Postman collection from `postman` folder.
-   - Update the environment variables with the correct values:
-     - `base_url`: `http://localhost:8081` (for api-gateway)
-     - `token`: `leave empty` (for now)
-   - In the Authentication Folder invoke the Generate Token request to update the token value automatically.
 
 5. Happy Coding!
