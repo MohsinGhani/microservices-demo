@@ -260,6 +260,7 @@ func main() {
 
 	// Protected route to get all orders
 	r.GET("/orders/all", JWTAuthMiddleware(), func(c *gin.Context) {
+		log.Printf("Error calling ")
 		req := &pbOrder.GetOrdersRequest{}
 		res, err := orderClient.GetOrders(c, req)
 		if err != nil {

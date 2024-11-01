@@ -14,11 +14,6 @@ services:
       - "5435:5432"
     networks:
       - nestjs-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   order-db:
     image: postgres:latest
@@ -33,11 +28,6 @@ services:
       - "5434:5432"
     networks:
       - nestjs-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   pgadmin:
     image: dpage/pgadmin4
@@ -85,8 +75,6 @@ services:
       - product-service-test # <-- Ensures the test runs before starting the service
     networks:
       - nestjs-network
-    volumes:
-      - ./proto-definitions:/proto-definitions # Mount proto-definitions
 
   order-service:
     build: ./order-service
@@ -104,8 +92,6 @@ services:
       - order-service-test # <-- Ensures the test runs before starting the service
     networks:
       - nestjs-network
-    volumes:
-      - ./proto-definitions:/proto-definitions # Mount proto-definitions
 
   api-gateway:
     build: ./api-gateway
@@ -116,8 +102,6 @@ services:
     depends_on:
       - product-service
       - order-service
-    volumes:
-      - ./proto-definitions:/proto-definitions # Mount proto-definitions
 
 networks:
   nestjs-network:

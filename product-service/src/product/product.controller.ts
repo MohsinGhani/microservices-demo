@@ -17,7 +17,7 @@ import {
   UpdateResponse,
   FindByIdsRequest,
   FindByIdsResponse,
-} from '../../../proto-definitions/generated/product';
+} from '../generated/product';
 
 @Controller('products')
 export class ProductController {

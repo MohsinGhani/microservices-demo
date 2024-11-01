@@ -6,6 +6,8 @@ PROTO_DIR="${SCRIPT_DIR}/proto-definitions/proto"
 API_GATEWAY_PRODUCT_DIR="${SCRIPT_DIR}/api-gateway/product"
 API_GATEWAY_ORDER_DIR="${SCRIPT_DIR}/api-gateway/order"
 GENERATED_TS_DIR="${SCRIPT_DIR}/proto-definitions/generated"
+DIR_PRODUCT="${SCRIPT_DIR}/product-service/src"
+DIR_ORDER="${SCRIPT_DIR}/order-service/src"
 
 # Step 1: Install Go dependencies for protobuf generation and ts-proto for TypeScript generation
 echo "Installing Go protobuf dependencies and ts-proto..."
@@ -33,7 +35,21 @@ protoc --proto_path="${PROTO_DIR}" \
 # Step 5: Generate pd.ts files for product.proto and order.proto
 echo "Generating pd.ts files for product.proto and order.proto..."
 protoc --plugin="${SCRIPT_DIR}/proto-definitions/node_modules/.bin/protoc-gen-ts_proto" \
-  --ts_proto_out="${GENERATED_TS_DIR}" \
+  --ts_proto_out="${GENERATED_TS_DIR}"  \
   --proto_path="${PROTO_DIR}" "${PROTO_DIR}"/*.proto
+
+# Generate TypeScript code for product.proto into product directory
+protoc --plugin="${SCRIPT_DIR}/proto-definitions/node_modules/.bin/protoc-gen-ts_proto" \
+  --ts_proto_out="${DIR_PRODUCT}/generated" \
+  --proto_path="${PROTO_DIR}" "${PROTO_DIR}"/*.proto
+
+cp "${PROTO_DIR}"/*.proto "${DIR_PRODUCT}/proto"
+
+# Generate TypeScript code for order.proto into order directory
+protoc --plugin="${SCRIPT_DIR}/proto-definitions/node_modules/.bin/protoc-gen-ts_proto" \
+  --ts_proto_out="${DIR_ORDER}/generated" \
+  --proto_path="${PROTO_DIR}" "${PROTO_DIR}"/*.proto
+
+cp "${PROTO_DIR}"/*.proto "${DIR_ORDER}/proto"
 
 echo "Protobuf compilation completed successfully."

@@ -15,7 +15,7 @@ async function bootstrap() {
       transport: Transport.GRPC,
       options: {
         package: 'order', // Must match the package name in your .proto file
-        protoPath: join(__dirname, '../../proto-definitions/proto/order.proto'), // Path to your .proto file
+        protoPath: join(__dirname, './proto/order.proto'), // Path to your .proto file
         url: '0.0.0.0:50052', // Bind to 0.0.0.0 so that it is accessible across the Docker network
       },
     },

@@ -7,13 +7,13 @@ import {
   FindOneRequest,
   DecreaseQuantityRequest,
   Product,
-} from '../../../proto-definitions/generated/product';
+} from '../generated/product';
 import { from, lastValueFrom } from 'rxjs';
 import {
   PlaceOrderRequest,
   Order as OrderProtoType,
   FullOrder,
-} from '../../../proto-definitions/generated/order';
+} from '../generated/order';
 import { Order } from './order.entity';
 import { status as grpcStatus } from '@grpc/grpc-js';
 

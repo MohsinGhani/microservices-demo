@@ -9,7 +9,7 @@ import {
   GetOrderResponse,
   GetOrdersRequest,
   GetOrdersResponse,
-} from '../../../proto-definitions/generated/order';
+} from '../generated/order';
 
 @Controller('orders')
 export class OrderController {
