@@ -1,0 +1,22 @@
+# Dockerfile.dev for Node.js development
+
+FROM node:20-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Install nodemon for live reloading
+RUN npm install -g nodemon
+
+# Copy all other source files
+COPY . .
+
+# Expose the port
+EXPOSE 3001
+
+# Start the service with nodemon for live reload
+CMD ["nodemon", "--watch", ".", "src/main.ts"]

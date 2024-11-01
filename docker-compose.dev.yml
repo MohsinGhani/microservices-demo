@@ -1,0 +1,122 @@
+version: "3.8"
+
+# Define volumes at the top
+volumes:
+  product_data:
+  order_data:
+  node_modules_product_service:
+  node_modules_order_service:
+
+services:
+  product-db:
+    image: postgres:latest
+    container_name: product_db_container-dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: productdb
+    volumes:
+      - product_data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+    networks:
+      - nestjs-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  order-db:
+    image: postgres:latest
+    container_name: order_db_container-dev
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: orderdb
+    volumes:
+      - order_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    networks:
+      - nestjs-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin_container-dev
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - product-db
+      - order-db
+    networks:
+      - nestjs-network
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+      - "50051:50051"
+    environment:
+      POSTGRES_HOST: product-db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: productdb
+    depends_on:
+      - product-db
+    networks:
+      - nestjs-network
+    volumes:
+      - ./product-service/src:/app/src # Mount source code for live reload during development
+      - node_modules_product_service:/app/node_modules # Prevent overwriting of node_modules
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+      - "50052:50052"
+    environment:
+      POSTGRES_HOST: order-db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: orderdb
+    depends_on:
+      - order-db
+    networks:
+      - nestjs-network
+    volumes:
+      - ./order-service/src:/app/src # Mount source code for live reload during development
+      - node_modules_order_service:/app/node_modules # Prevent overwriting of node_modules
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8081:8080"
+    networks:
+      - nestjs-network
+    depends_on:
+      - product-service
+      - order-service
+    volumes:
+      - ./api-gateway:/app # Mounts local directory to /app in the container
+      - /app/go/pkg/mod # Cache Go modules
+
+networks:
+  nestjs-network:
+    driver: bridge
